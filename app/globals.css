@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .section {
+    @apply w-full min-h-[100vh] flex items-center justify-center max-w-4xl mx-auto
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center
+  }
+
+  .flex-between {
+    @apply flex flex-center justify-between
+  }
+
+  .custom-border {
+    @apply rounded-lg border border-b-2 border-r-2 border-gray-700 px-2 py-1 md:block dark:border-white
+  }
+
+  .container-paddings {
+    @apply px-5 py-2
+  }
+
+}
