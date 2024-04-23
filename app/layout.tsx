@@ -1,3 +1,4 @@
+import Navbar from '@/components/shared/Navbar'
 import type { Metadata } from 'next'
 import './globals.css'
 
@@ -14,7 +15,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className='section bg-gray-50' >{children}</body>
+      <body className='bg-gray-50' >
+        <Navbar />
+        <div className="section pt-[100px] px-[5px] ">
+          {children}
+        </div>
+      </body>
     </html>
   )
 }

@@ -6,7 +6,7 @@ import Image from "next/image"
 const MultipleChoice = ({ survey }: { survey: survey }) => {
 
     return (
-        <div className="custom-border container-paddings bg-white max-w-2xl w-full max-h-3xl h-[50vh] shadow-md pt-10">
+        <div className="custom-border container-paddings bg-white max-w-2xl w-full  lg:min-h-3xl shadow-md pt-10  mx-auto">
 
             <div className="flex-row flex gap-2 border-b pb-5">
                 <Image src={"/survey.svg"} alt="" width={60} height={60} />
@@ -16,9 +16,13 @@ const MultipleChoice = ({ survey }: { survey: survey }) => {
 
             <MultipleChoiceOptions surveyOptions={survey.surveyOptions} />
 
+           
+
         </div>
     )
 
 }
 
 export default MultipleChoice
+
+

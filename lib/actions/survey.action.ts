@@ -10,16 +10,24 @@ export async function fetchSurvey(id: string): Promise<survey> {
             surveyOptions: [
                 {
                     title: "Italy - famous for its art, history, and cuisine",
-                    count: 1,
+                    count: 100,
                 },
                 {
                     title: "Japan - known for its unique culture and stunning landscapes",
-                    count: 2,
+                    count: 200,
                 },
                 {
                     title: "Australia - home to the Great Barrier Reef and diverse wildlife",
-                    count: 3,
-                }
+                    count: 3005,
+                },
+                {
+                    title: "Italy - famous for its art, history, and cuisine",
+                    count: 100,
+                },
+                {
+                    title: "Japan - known for its unique culture and stunning landscapes",
+                    count: 200,
+                },
             ]
 
         }
@@ -28,4 +36,9 @@ export async function fetchSurvey(id: string): Promise<survey> {
             resolve(data);
         }, 1000);
     })
+}
+
+export async function postResult() {
+
+    return {}
 }
