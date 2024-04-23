@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  .header {
+    @apply text-3xl 
+  }
   .section {
     @apply w-full min-h-[100vh] flex items-center justify-center max-w-4xl mx-auto
   }
@@ -20,7 +23,7 @@
   }
 
   .container-paddings {
-    @apply px-5 py-2
+    @apply px-5 py-4
   }
 
 }
