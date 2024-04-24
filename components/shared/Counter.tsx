@@ -1,25 +1,38 @@
 "use client"
-import IncrementNumber from "react-increment-number";
 import { Progress } from "../ui/progress";
 import { useState, useEffect } from "react";
 
-const Counter = ({ number }: { number: number }) => {
-    const [count, setCount] = useState<number>(0)
+const Counter = ({ number, total }: { number: number, total: number }) => {
+    const [count, setCount] = useState<number>(0);
+    const [percent, setPercent] = useState<number>(0);
+    console.log(total);
 
     const increaseNumber = () => {
         setCount(count + 1)
     }
 
     useEffect(() => {
-        if(count === number) return;
+        if (count === number) return;
 
         setTimeout(() => {
             increaseNumber();
-        }, 100 / (number - 100000))
+        }, 10)
     }, [count])
 
+    useEffect(() => {
+        const localPercent: number = parseInt(number / total * 100);
+        console.log({ number, localPercent })
+        if (percent >= localPercent) return
+        else
+            setTimeout(() => {
+                setPercent(percent + 1)
+            }, 10);
+
+
+    }, [percent])
+
     return <span className="font-mono text-[15px] w-full flex-row flex-center gap-4 h-[10px] absolute bottom-0 px-2">
-        <Progress value={10} />
+        <Progress value={percent} />
         {count}
     </span>
 }
