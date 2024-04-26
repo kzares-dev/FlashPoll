@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import Counter from "../shared/Counter";
 import Button from "../shared/Button";
-
+    
 const MultipleChoiceOptions = ({ surveyOptions }: { surveyOptions: surveyOption[] }) => {
 
     const [selectedOption, setSelectedOption] = useState<number>(-1);
