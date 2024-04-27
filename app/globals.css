@@ -77,9 +77,13 @@
       @apply text-3xl 
     }
     .section {
-      @apply w-full min-h-[100vh] flex lg:items-center lg:justify-center max-w-4xl mx-auto
+      @apply w-full min-h-[100vh] max-w-[1440px] mx-auto
     }
   
+    .section-flex{
+      @apply flex lg:items-center lg:justify-center
+    }
+
     .flex-center {
       @apply flex items-center justify-center
     }

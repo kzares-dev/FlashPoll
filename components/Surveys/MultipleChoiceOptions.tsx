@@ -4,17 +4,19 @@ import Image from "next/image";
 import { useState } from "react";
 import Counter from "../shared/Counter";
 import Button from "../shared/Button";
-    
-const MultipleChoiceOptions = ({ surveyOptions }: { surveyOptions: surveyOption[] }) => {
+
+const MultipleChoiceOptions = ({ surveyOptions, disabled }: { surveyOptions: surveyOption[], disabled?: boolean }) => {
 
     const [selectedOption, setSelectedOption] = useState<number>(-1);
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
 
     const submitSurvey = () => {
+        if(disabled) return
         setIsSubmitted(true);
     }
 
+    // this sum is to calculate the percent in the Counter component
     function sumCounts(arr: surveyOption[]) {
         let sum = 0;
         arr.forEach(item => {
@@ -34,7 +36,7 @@ const MultipleChoiceOptions = ({ surveyOptions }: { surveyOptions: surveyOption[
                     return (
                         <div
                             onClick={() => setSelectedOption(idx)}
-                            className={`rounded-md pb-3 relative flex flex-col  gap-4 transition-all ${isSelected? "bg-gray-200 border" : "hover:translate-y-[-5px] bg-gray-50 hover:bg-gray-100 hover:border"} "`}
+                            className={`rounded-md pb-3 relative flex flex-col  gap-4 transition-all ${isSelected ? "bg-gray-200 border" : "hover:translate-y-[-5px] bg-gray-50 hover:bg-gray-100 hover:border"} "`}
                             key={surveyOption.count + surveyOption.title}
                         >
 

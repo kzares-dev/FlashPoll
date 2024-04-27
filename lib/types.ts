@@ -10,3 +10,4 @@ export type survey = {
     header: string,
     surveyOptions: surveyOption[],
 }
+
