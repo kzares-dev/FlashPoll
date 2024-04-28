@@ -1,6 +1,6 @@
 "use client";
 import { survey } from "@/lib/types";
-import { useState } from "react";
+import { RefObject, useRef, useState } from "react";
 import MultipleChoice from "./MultipleChoice";
 import Input from "../shared/Input";
 
@@ -13,28 +13,41 @@ const CreateMultipleChoice = () => {
     default: true,
   })
 
-
-  console.log(survey.surveyOptions)
-
-
   // this state is to create a survey option
   const [option, setOption] = useState<string>("");
-  
+  // this variables are fot the editing process
+  const [editIdx, setEditIdx] = useState<number>(-1)
+  const inputOptionRef = useRef() as RefObject<HTMLInputElement>;
+
   const createOption = (e: any) => {
     e.preventDefault()
+    if (option === '') return
 
     const newOption = {
       title: option,
       count: 0,
     }
+    // check if the edit mode is enabled
+    if (editIdx >= 0) {
+      let tempArray = survey.surveyOptions;
+      tempArray[editIdx] = newOption;
+
+      setSurvey((prevState: survey & { default: boolean }) => {
+        return { ...prevState, default: false, surveyOptions: tempArray }
+      })
+      setEditIdx(-1);
+      setOption("")
+      return;
+    }
+
     // first we check if no option was created before
     // this steph is necesary becouse the surveyOptions by default has one element
     if (survey.default) {
 
       setSurvey((prevState: survey & { default: boolean }) => {
-        return { ...prevState,default:false, surveyOptions: [newOption] }
+        return { ...prevState, default: false, surveyOptions: [newOption] }
       })
-      
+
     } else {
       setSurvey((prevState: survey & { default: boolean }) => {
         return { ...prevState, surveyOptions: [...prevState.surveyOptions, newOption] }
@@ -45,12 +58,31 @@ const CreateMultipleChoice = () => {
     setOption("");
   }
 
+  const deleteOption = (idx: number) => {
+    let tempArray = survey.surveyOptions;
+    tempArray.splice(idx, 1);
+
+    setSurvey((prevState: survey & { default: boolean }) => {
+      return { ...prevState, default: false, surveyOptions: tempArray }
+    })
+  }
+
+  const editOption = (idx: number) => {
+    inputOptionRef.current?.focus();
+    setOption(survey.surveyOptions[idx].title)
+    setEditIdx(idx);
+  }
+
   return (
     <section className="section-flex min-h-[80vh] relative">
 
       <div className=" items-start flex-between flex-row gap-10 w-full">
         <div className="flex-1 ">
-          <MultipleChoice disabled survey={survey} />
+          <MultipleChoice
+            deleteOption={deleteOption}
+            editOption={editOption}
+            disabled
+            survey={survey} />
         </div>
 
         <div className="bg-white flex-1 min-h-[20vh] container-paddings shadow border rounded-lg flex flex-col gap-3">
@@ -65,6 +97,7 @@ const CreateMultipleChoice = () => {
 
           <form onSubmit={e => createOption(e)} className="flex flex-col gap-5" >
             <Input
+              ref={inputOptionRef}
               label="Option"
               value={option}
               placeholder="Create a survey option"

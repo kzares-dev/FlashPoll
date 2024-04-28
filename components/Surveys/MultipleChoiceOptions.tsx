@@ -5,14 +5,21 @@ import { useState } from "react";
 import Counter from "../shared/Counter";
 import Button from "../shared/Button";
 
-const MultipleChoiceOptions = ({ surveyOptions, disabled }: { surveyOptions: surveyOption[], disabled?: boolean }) => {
+interface MultipleChoiceOptionsType {
+    surveyOptions: surveyOption[],
+    disabled?: boolean,
+    editOption?: (idx: number) => void,
+    deleteOption?: (idx: number) => void,
+}
+
+const MultipleChoiceOptions = ({ surveyOptions, disabled, editOption, deleteOption }: MultipleChoiceOptionsType) => {
 
     const [selectedOption, setSelectedOption] = useState<number>(-1);
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
 
     const submitSurvey = () => {
-        if(disabled) return
+        if (disabled) return
         setIsSubmitted(true);
     }
 
@@ -23,6 +30,31 @@ const MultipleChoiceOptions = ({ surveyOptions, disabled }: { surveyOptions: sur
             sum += item.count;
         });
         return sum;
+    }
+
+    const renderButtons = (idx: number) => {
+        if (editOption === undefined || deleteOption === undefined) return
+
+        return (
+            <div className="flex flex-row gap-3 ">
+                <Image
+                    onClick={() => editOption(idx)}
+                    width={20}
+                    height={25}
+                    alt=""
+                    src="/edit.svg"
+                    className="hover:scale-[1.2] transition-all"
+                />
+                <Image
+                    onClick={() => deleteOption(idx)}
+                    width={20}
+                    height={25}
+                    alt=""
+                    src="/delete.svg"
+                    className="hover:scale-[1.2] transition-all"
+                />
+            </div>
+        )
     }
 
     return (
@@ -49,7 +81,14 @@ const MultipleChoiceOptions = ({ surveyOptions, disabled }: { surveyOptions: sur
                                     }
                                 </span>
 
-                                <h1 className={`text-xl text-neutral-600`}>{surveyOption.title}</h1>
+                                <h1 className={`text-xl text-neutral-600 flex-between w-full pr-2 `}>
+                                    {surveyOption.title}
+
+                                    {/*-- This are the delete and edit buttons, they are in play on the create survey --*/}
+                                    {renderButtons(idx)}
+                                </h1>
+
+
                             </div>
 
                             {isSubmitted && <Counter total={sumCounts(surveyOptions)} number={surveyOption.count} />}

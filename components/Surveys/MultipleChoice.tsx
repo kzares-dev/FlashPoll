@@ -2,8 +2,15 @@ import { survey } from "@/lib/types"
 import MultipleChoiceOptions from "./MultipleChoiceOptions"
 import Image from "next/image"
 
+interface MultipleChoiceType {
+    survey: survey,
+    disabled?: boolean,
+    editOption?: (idx: number) => void,
+    deleteOption?: (idx: number) => void,
+}
+
 // the disables param is to make this component rehusable in the survey creation
-const MultipleChoice = ({ survey, disabled }: { survey: survey, disabled?: boolean }) => {
+const MultipleChoice = ({ survey, disabled, editOption, deleteOption }: MultipleChoiceType) => {
 
     return (
         <div className="custom-border container-paddings bg-white max-w-2xl w-full  lg:min-h-3xl shadow-md pt-10  mx-auto">
@@ -14,9 +21,13 @@ const MultipleChoice = ({ survey, disabled }: { survey: survey, disabled?: boole
 
             </div>
 
-            <MultipleChoiceOptions disabled surveyOptions={survey.surveyOptions} />
+            <MultipleChoiceOptions
+                disabled
+                editOption={editOption}
+                deleteOption={deleteOption}
+                surveyOptions={survey.surveyOptions} />
 
-           
+
 
         </div>
     )
