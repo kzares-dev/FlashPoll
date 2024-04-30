@@ -1,36 +1,11 @@
+import { dummySurveys } from "../dummy";
 import { survey } from "../types"
 
 export async function fetchSurvey(id: string): Promise<survey> {
 
     return new Promise((resolve, reject) => {
 
-        const data: survey = {
-            type: "Multiple Choice",
-            header: "Which country would you like to visit on your next vacation?",
-            surveyOptions: [
-                {
-                    title: "Italy - famous for its art, history, and cuisine",
-                    count: 100,
-                },
-                {
-                    title: "Japan - known for its unique culture and stunning landscapes",
-                    count: 200,
-                },
-                {
-                    title: "Australia - home to the Great Barrier Reef and diverse wildlife",
-                    count: 3005,
-                },
-                {
-                    title: "Italy - famous for its art, history, and cuisine",
-                    count: 100,
-                },
-                {
-                    title: "Japan - known for its unique culture and stunning landscapes",
-                    count: 200,
-                },
-            ]
-
-        }
+        const data = dummySurveys(1)[0]
 
         setTimeout(() => {
             resolve(data);
@@ -38,7 +13,20 @@ export async function fetchSurvey(id: string): Promise<survey> {
     })
 }
 
-export async function postResult() {
+export async function getUserSurveys(qty: number) : Promise<survey[]> {
 
-    return {}
+    return new Promise((resolve, reject) => {
+
+        const data = dummySurveys(qty)
+
+        setTimeout(() => {
+            resolve(data);
+        }, 1000);
+    })
 }
+
+export async function publishSurvey(survey: survey) {
+
+    return survey
+}
+

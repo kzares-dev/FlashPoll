@@ -1,7 +1,14 @@
 import Image from "next/image"
+import Separator from "@/components/shared/Separator"
+import { getUserSurveys } from "@/lib/actions/survey.action"
+import SurveyCard from "@/components/shared/SurveyCard";
+import Button from "@/components/shared/Button";
+import Link from "next/link";
 
+async function Dashboard() {
 
-function Dashboard() {
+    const userSurveys = await getUserSurveys(5);
+
     return (
         <section className="w-full h-auto container py-10 px-1 flex gap-5 flex-col" >
 
@@ -14,7 +21,30 @@ function Dashboard() {
 
             </div>
 
-            <div className=' bg-white flex-center w-full min-h-[60vh] custom-border shadow-md h-auto ' >
+            <div className=' bg-white w-full min-h-[60vh] custom-border shadow-md h-auto flex flex-col lg:flex-row pb-5' >
+
+
+                <div className="flex-1 h-auto"> Fuck</div>
+
+                <Separator orientation="vertical" />
+
+                {/*-- Here goes the user surveys --*/}
+                <div className="flex-1 h-auto px-2 ">
+                    <h1 className="header my-5 text-center">Your Surveys</h1>
+
+                    <div className="flex flex-col gap-5 px-2 py-5">
+                        {userSurveys.map((survey, idx) => {
+                            return (
+                                <SurveyCard survey={survey} key={idx} />
+                            )
+                        })}
+                    </div>
+
+                    <Button >
+                        <Link href="/surveys" >See More</Link>
+                    </Button>
+                </div>
+
 
             </div>
 

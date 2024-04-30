@@ -1,17 +1,21 @@
 "use client";
 import { survey } from "@/lib/types";
 import { RefObject, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import MultipleChoice from "./MultipleChoice";
 import Input from "../shared/Input";
+import { publishSurvey } from "@/lib/actions/survey.action";
 
 const CreateMultipleChoice = () => {
 
-  const [survey, setSurvey] = useState<survey & { default: boolean }>({
+  const router = useRouter();
+
+  const [survey, setSurvey] = useState<survey>({
     type: "",
     header: "Here goes the question",
     surveyOptions: [{ title: "Example Option", count: 0 }],
-    default: true,
   })
+  const [isDefault, setDefault] = useState<boolean>(true)
 
   // this state is to create a survey option
   const [option, setOption] = useState<string>("");
@@ -32,7 +36,7 @@ const CreateMultipleChoice = () => {
       let tempArray = survey.surveyOptions;
       tempArray[editIdx] = newOption;
 
-      setSurvey((prevState: survey & { default: boolean }) => {
+      setSurvey((prevState: survey) => {
         return { ...prevState, default: false, surveyOptions: tempArray }
       })
       setEditIdx(-1);
@@ -42,14 +46,14 @@ const CreateMultipleChoice = () => {
 
     // first we check if no option was created before
     // this steph is necesary becouse the surveyOptions by default has one element
-    if (survey.default) {
-
-      setSurvey((prevState: survey & { default: boolean }) => {
-        return { ...prevState, default: false, surveyOptions: [newOption] }
+    if (isDefault) {
+      setDefault(false)
+      setSurvey((prevState: survey) => {
+        return { ...prevState, surveyOptions: [newOption] }
       })
 
     } else {
-      setSurvey((prevState: survey & { default: boolean }) => {
+      setSurvey((prevState: survey) => {
         return { ...prevState, surveyOptions: [...prevState.surveyOptions, newOption] }
       })
     }
@@ -62,7 +66,7 @@ const CreateMultipleChoice = () => {
     let tempArray = survey.surveyOptions;
     tempArray.splice(idx, 1);
 
-    setSurvey((prevState: survey & { default: boolean }) => {
+    setSurvey((prevState: survey) => {
       return { ...prevState, default: false, surveyOptions: tempArray }
     })
   }
@@ -73,11 +77,28 @@ const CreateMultipleChoice = () => {
     setEditIdx(idx);
   }
 
-  return (
-    <section className="section-flex min-h-[80vh] relative">
+  // this function send the data to the server action, where is processed and saved in database
+  const submitSurvey = async () => {
 
-      <div className=" items-start flex-between flex-row gap-10 w-full">
-        <div className="flex-1 ">
+    // TODO: validations
+
+     await publishSurvey(survey)
+      .then(() => {
+        router.push("/dashboard")
+        // process the response
+      })
+      .catch((e) => {
+        // p rocess the error
+        console.log(e)
+      })
+  }
+
+  return (
+    <section className="section-flex min-h-[80vh] relative flex-col gap-5 md:gap-10">
+
+      <div className=" items-start flex-between flex-col-reverse  md:flex-row gap-10 w-full">
+
+        <div className="flex-1 w-full">
           <MultipleChoice
             deleteOption={deleteOption}
             editOption={editOption}
@@ -85,7 +106,7 @@ const CreateMultipleChoice = () => {
             survey={survey} />
         </div>
 
-        <div className="bg-white flex-1 min-h-[20vh] container-paddings shadow border rounded-lg flex flex-col gap-3">
+        <div className="bg-white flex-1 min-h-[20vh] container-paddings shadow border rounded-lg flex flex-col gap-3 w-full">
           <h1 className="text-2xl font-semibold font-sans py-5 border-b">Customize your survey</h1>
 
           <Input
@@ -112,7 +133,7 @@ const CreateMultipleChoice = () => {
       </div>
 
       {/* --- Continue Button --- */}
-      <div className="absolute bottom-0 right-0 min-w-[300px] py-[30px] pl-5 border-[2px] border-neutral-400 text-4xl font-sans rounded-tr-[20px] shadow-lg">
+      <div onClick={submitSurvey} className="my-4 w-full py-[20px] pl-5 border-[2px] border-neutral-400 text-4xl text-center font-serif shadow-lg cursor-pointer hover:bg-gray-100 transition-all hover:shadow-sm">
         Publish
       </div>
     </section>

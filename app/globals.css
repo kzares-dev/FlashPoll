@@ -74,7 +74,7 @@
       @apply bg-background text-foreground;
     }
     .header {
-      @apply text-3xl 
+      @apply text-5xl font-light font-sans
     }
     .section {
       @apply w-full min-h-[100vh] max-w-[1440px] mx-auto
@@ -99,6 +99,7 @@
     .container-paddings {
       @apply px-5 py-4
     }
+    
   }
 
   
